@@ -38,5 +38,12 @@ export function createApp(config: RigConfig = loadConfig()) {
     );
   });
 
+  // Same source as the digest page: readNight() sorts the rows, so page and JSON agree.
+  app.get('/api/digest/:night', (c) => {
+    const night = readNight(config.runsDir, c.req.param('night'));
+    if (!night) return c.json({ error: 'no run log for this night' }, 404);
+    return c.json(night);
+  });
+
   return app;
 }
